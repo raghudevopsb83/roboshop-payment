@@ -71,9 +71,12 @@ def pay(id):
     # check that the cart is valid
     # this will blow up if the cart is not valid
     has_shipping = False
-    for item in cart.get('items'):
-        if item.get('sku') == 'SHIP':
-            has_shipping = True
+    if cart.get('items') is not None:
+        for item in cart.get('items'):
+            if item.get('sku') == 'SHIP':
+                has_shipping = True
+    else:
+        app.logger.error("No items in the cart to iterate.")
 
     if cart.get('total', 0) == 0 or has_shipping == False:
         app.logger.warn('cart not valid')
